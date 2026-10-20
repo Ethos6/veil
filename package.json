@@ -1,0 +1,181 @@
+{
+  "name": "veil",
+  "productName": "Veil",
+  "version": "1.0.0",
+  "description": "A private, fast desktop browser with a built-in ad, tracker and cookie-banner blocker, fingerprinting protection and no Google services.",
+  "homepage": "https://github.com/Ethos6/veil",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ethos6/veil.git"
+  },
+  "bugs": "https://github.com/Ethos6/veil/issues",
+  "author": {
+    "name": "Ethos 6",
+    "email": "connect@atomesus.com"
+  },
+  "license": "MIT",
+  "type": "module",
+  "main": "src/main/main.js",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --enable-logging",
+    "lists": "node scripts/build-engine.js",
+    "test": "node --test \"test/unit/*.test.js\"",
+    "test:e2e": "node --test --test-concurrency=1 \"test/e2e/*.test.js\"",
+    "typecheck": "tsc -p .",
+    "dist": "npm run lists && electron-builder --publish never",
+    "dist:dir": "electron-builder --dir --publish never"
+  },
+  "keywords": [
+    "browser",
+    "privacy",
+    "adblock",
+    "ad-blocker",
+    "tracker-blocker",
+    "fingerprinting",
+    "electron",
+    "chromium",
+    "ungoogled"
+  ],
+  "dependencies": {
+    "@ghostery/adblocker": "^2.20.1",
+    "tldts": "^7.4.19"
+  },
+  "devDependencies": {
+    "@electron/fuses": "^2.1.3",
+    "@types/node": "^22.20.5",
+    "electron": "^44.9.1",
+    "electron-builder": "^26.15.3",
+    "playwright": "^1.56.1",
+    "typescript": "^5.9.3"
+  },
+  "build": {
+    "appId": "com.ethos6.veil",
+    "productName": "Veil",
+    "copyright": "Copyright © 2026 Ethos 6",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "src/**/*",
+      "package.json",
+      "!**/*.map",
+      "!**/*.md"
+    ],
+    "extraResources": [
+      {
+        "from": "resources/",
+        "to": ".",
+        "filter": [
+          "engine.bin",
+          "engine.bin.json"
+        ]
+      },
+      {
+        "from": "build/icon.png",
+        "to": "icon.png"
+      }
+    ],
+    "asar": true,
+    "electronFuses": {
+      "runAsNode": false,
+      "enableCookieEncryption": true,
+      "enableNodeOptionsEnvironmentVariable": false,
+      "enableNodeCliInspectArguments": false,
+      "enableEmbeddedAsarIntegrityValidation": true,
+      "onlyLoadAppFromAsar": true,
+      "loadBrowserProcessSpecificV8Snapshot": false,
+      "grantFileProtocolExtraPrivileges": false
+    },
+    "protocols": [
+      {
+        "name": "Web page",
+        "schemes": [
+          "http",
+          "https"
+        ]
+      }
+    ],
+    "fileAssociations": [
+      {
+        "ext": [
+          "html",
+          "htm"
+        ],
+        "name": "HTML document",
+        "role": "Viewer"
+      }
+    ],
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Network;WebBrowser",
+      "executableName": "veil",
+      "synopsis": "Private browser with built-in ad and tracker blocking",
+      "mimeTypes": [
+        "x-scheme-handler/http",
+        "x-scheme-handler/https",
+        "text/html"
+      ],
+      "desktop": {
+        "entry": {
+          "Name": "Veil",
+          "GenericName": "Web Browser",
+          "Keywords": "browser;web;internet;privacy;adblock;"
+        }
+      },
+      "syncDesktopName": true
+    },
+    "deb": {
+      "depends": [
+        "libnss3",
+        "libgtk-3-0",
+        "libxss1",
+        "libasound2 | libasound2t64"
+      ]
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
+      ],
+      "category": "public.app-category.productivity",
+      "identity": "-",
+      "hardenedRuntime": false
+    },
+    "dmg": {
+      "title": "Veil ${version}"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "Veil"
+    },
+    "artifactName": "Veil-${version}-${os}-${arch}.${ext}",
+    "publish": null
+  },
+  "desktopName": "veil.desktop"
+}

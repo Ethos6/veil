@@ -1,0 +1,6 @@
+node_modules/
+dist/
+resources/engine.bin
+resources/engine.bin.json
+*.log
+.DS_Store
