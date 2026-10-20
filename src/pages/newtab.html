@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>New Tab</title>
+<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="newtab.css">
+<script src="common.js" defer></script>
+<script src="newtab.js" defer></script>
+</head>
+<body>
+<main class="nt">
+  <div class="brand">
+    <span class="mark" aria-hidden="true"><svg viewBox="0 0 64 64" width="44" height="44"><path d="M16 18l16 30 16-30" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 18c8 5 30 5 38 0" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".55"/></svg></span>
+    <span class="word">Veil</span>
+  </div>
+  <form id="search" class="search" autocomplete="off">
+    <input id="q" type="search" placeholder="Search privately or enter an address" aria-label="Search or enter address" autofocus>
+  </form>
+  <section id="private" class="private-card" hidden>
+    <h2>You're in a private window</h2>
+    <p>Veil won't keep your history, cookies, site data or form entries from this window once you close it. Downloads and bookmarks you create are kept.</p>
+    <p class="muted">Websites, your employer or school, and your internet provider can still see what you visit. Shields stay on here too.</p>
+  </section>
+  <section class="stats" aria-label="Shields statistics">
+    <div><b id="s-blocked">0</b><span>Ads &amp; trackers blocked</span></div>
+    <div><b id="s-upgraded">0</b><span>Connections upgraded to HTTPS</span></div>
+    <div><b id="s-time">0s</b><span>Estimated time saved</span></div>
+  </section>
+  <section id="top" class="top" aria-label="Most visited"></section>
+  <footer id="foot" class="foot"></footer>
+</main>
+</body>
+</html>

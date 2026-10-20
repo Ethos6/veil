@@ -1,0 +1,88 @@
+:root {
+  --bg: #f6f7f9;
+  --card: #ffffff;
+  --text: #1c1e24;
+  --muted: #646a78;
+  --border: #e1e4ea;
+  --accent: #5b4cf0;
+  --accent-2: #8b5cf6;
+  --accent-soft: #ece9ff;
+  --good: #11845b;
+  --bad: #c2410c;
+  --field: #f0f2f5;
+  --hover: rgba(20, 24, 40, .05);
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --bg: #15171c;
+  --card: #1f2228;
+  --text: #e8eaef;
+  --muted: #9aa1ae;
+  --border: #2f333c;
+  --accent: #9b8cff;
+  --accent-2: #c4a5ff;
+  --accent-soft: #2c2850;
+  --good: #4fd19b;
+  --bad: #ff9a6b;
+  --field: #17191e;
+  --hover: rgba(255, 255, 255, .05);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg: #15171c;
+    --card: #1f2228;
+    --text: #e8eaef;
+    --muted: #9aa1ae;
+    --border: #2f333c;
+    --accent: #9b8cff;
+    --accent-2: #c4a5ff;
+    --accent-soft: #2c2850;
+    --good: #4fd19b;
+    --bad: #ff9a6b;
+    --field: #17191e;
+    --hover: rgba(255, 255, 255, .05);
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); }
+body { margin: 0; font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif; color: var(--text); background: var(--bg); }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1 { font-size: 26px; margin: 0 0 4px; letter-spacing: -.01em; }
+h2 { font-size: 15px; margin: 0 0 12px; }
+p { margin: 0 0 10px; }
+.muted { color: var(--muted); }
+.wrap { max-width: 860px; margin: 0 auto; padding: 40px 24px 80px; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 6px 0; margin: 0 0 18px; }
+.card > h2 { padding: 16px 20px 0; margin: 0 0 6px; }
+.item { display: flex; align-items: center; gap: 16px; padding: 12px 20px; min-height: 56px; }
+.item + .item { border-top: 1px solid var(--border); }
+.item .l { flex: 1; min-width: 0; }
+.item .l small { display: block; color: var(--muted); font-size: 12.5px; }
+.btn { height: 32px; padding: 0 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--text); font: inherit; cursor: pointer; white-space: nowrap; }
+.btn:hover { background: var(--hover); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.danger { color: var(--bad); }
+.btn:disabled { opacity: .5; cursor: default; }
+:root[data-theme="dark"] .btn.primary { color: #14121f; }
+input[type=text], input[type=search], input[type=url], select {
+  height: 34px; border-radius: 8px; border: 1px solid var(--border); background: var(--field); color: var(--text);
+  padding: 0 10px; font: inherit; outline: 0;
+}
+input:focus, select:focus { border-color: var(--accent); }
+.switch { position: relative; width: 42px; height: 24px; border-radius: 12px; background: var(--border); border: 0; flex: none; padding: 0; cursor: pointer; transition: background .15s; }
+.switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: transform .15s; box-shadow: 0 1px 3px rgba(0,0,0,.25); }
+.switch.on { background: var(--accent); }
+.switch.on::after { transform: translateX(18px); }
+.switch:focus-visible, .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.chip { display: inline-block; padding: 1px 8px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); font-size: 12px; font-weight: 600; }
+.chip.warn { background: rgba(194, 65, 12, .12); color: var(--bad); }
+.empty { padding: 40px 20px; text-align: center; color: var(--muted); }
+.toolbar { display: flex; gap: 10px; align-items: center; margin: 18px 0; flex-wrap: wrap; }
+.toolbar input { flex: 1; min-width: 200px; }
+.logo { display: inline-grid; place-items: center; width: 38px; height: 38px; border-radius: 11px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff; }
+.head { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; }
+[hidden] { display: none !important; }
+@media (max-width: 600px) { .wrap { padding: 24px 14px 60px; } .item { flex-wrap: wrap; } }
