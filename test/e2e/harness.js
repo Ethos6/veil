@@ -90,7 +90,7 @@ export async function startServers() {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "veil-cert-"));
   execFileSync("openssl", ["req", "-x509", "-newkey", "rsa:2048", "-nodes", "-keyout", path.join(dir, "k.pem"), "-out", path.join(dir, "c.pem"), "-days", "2", "-subj", "/CN=veil.test"], { stdio: "ignore" });
   const handler = (req, res) => {
-    try { pageFor((req.headers.host || "").split(":")[0], req.url || "/", req, res); } catch (e) { res.writeHead(500); res.end(String(e)); }
+    try { pageFor((req.headers.host || "").split(":")[0], req.url || "/", req, res); } catch (e) { console.error(e); res.writeHead(500); res.end("test server error"); }
   };
   const plain = http.createServer(handler);
   const tls = https.createServer({ key: fs.readFileSync(path.join(dir, "k.pem")), cert: fs.readFileSync(path.join(dir, "c.pem")) }, handler);
@@ -197,6 +197,8 @@ export function evalTab(app, code, win = 0) {
 
 /** Click an element in the active tab with a real (OS-level) mouse event. */
 export async function clickTab(app, selector, win = 0) {
+  // Test selectors are simple ids, classes and attributes; anything else is a test bug.
+  if (!/^[\w#.\-[\]="' :]+$/.test(selector)) throw new Error(`unsupported selector ${selector}`);
   const box = await evalTab(app, `(() => { const r = document.querySelector(${JSON.stringify(selector)}).getBoundingClientRect(); return { x: Math.round(r.x + r.width / 2), y: Math.round(r.y + r.height / 2) }; })()`, win);
   await app.evaluate((_e, [b, w]) => {
     const wc = globalThis.veil.windows[w].active.wc;

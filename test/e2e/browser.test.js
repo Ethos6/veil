@@ -168,7 +168,7 @@ test("history page lists visits and can remove them; private windows record noth
   const req = seen.filter((s) => s.path === "/private-visit").pop();
   assert.equal(req.headers.cookie, undefined, "the private window doesn't see normal cookies");
   const hist = await app.evaluate(() => globalThis.veil.historyStore.data.entries.map((e) => e.url));
-  assert.ok(!hist.includes("https://other.test/private-visit"));
+  assert.ok(hist.every((u) => u !== "https://other.test/private-visit"));
   const privUi = await waitForPage(app, (u) => u.startsWith("veil://ui/?private=1"));
   await privUi.waitForSelector("#private-badge:not([hidden])");
   await app.evaluate(() => globalThis.veil.windows[1].window.close());
