@@ -1,0 +1,8 @@
+{
+  "scriptlets": [
+    { "name": "veil-mark.js", "aliases": [], "body": "function veilMark(name) { window[name] = 'scriptlet ran before page scripts: ' + (document.readyState === 'loading'); }", "dependencies": [] }
+  ],
+  "redirects": [
+    { "name": "noop.js", "aliases": ["noopjs"], "body": "(function(){ window.__noop = true; })();", "contentType": "application/javascript" }
+  ]
+}

@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head>
+<title>Site</title>
+<script>window.__early = String(window.__marked);</script>
+<script src="https://ads.test/ad.js"></script>
+<script src="https://tracker.test/t.js"></script>
+<script src="https://redirect.test/lib.js"></script>
+</head>
+<body>
+<h1>A page with ads</h1>
+<div class="ad-banner" id="ad">AD</div>
+<div id="cookie-notice">We use cookies</div>
+<div id="content">Real content</div>
+<iframe id="f" src="https://other.test/frame"></iframe>
+<script>
+  window.__frame = new Promise((resolve) => addEventListener("message", (e) => resolve(e.data)));
+  window.__gpc = navigator.globalPrivacyControl;
+</script>
+</body>
+</html>

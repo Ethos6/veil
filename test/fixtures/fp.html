@@ -1,0 +1,37 @@
+<!doctype html>
+<title>fp</title>
+<canvas id="c" width="220" height="40"></canvas>
+<script>
+  function draw() {
+    const c = document.getElementById("c");
+    const x = c.getContext("2d");
+    x.textBaseline = "top";
+    x.font = "16px Arial";
+    x.fillStyle = "#f60";
+    x.fillRect(10, 5, 120, 20);
+    x.fillStyle = "#069";
+    x.fillText("Veil fingerprint test", 4, 12);
+    return c;
+  }
+  const c = draw();
+  window.__fp = {
+    a: c.toDataURL(),
+    b: c.toDataURL(),
+    pixels: (() => { let h = 0; for (const v of c.getContext("2d").getImageData(0, 0, 220, 40).data) h = (Math.imul(h, 31) + v) >>> 0; return h; })(),
+    cores: navigator.hardwareConcurrency,
+    battery: typeof navigator.getBattery,
+  };
+  try {
+    const gl = document.createElement("canvas").getContext("webgl");
+    const ext = gl && gl.getExtension("WEBGL_debug_renderer_info");
+    window.__fp.gl = gl ? { unmasked: ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : null, masked: gl.getParameter(gl.RENDERER) } : null;
+  } catch (e) { window.__fp.gl = String(e); }
+  // A same-origin frame created by script gets the same protection.
+  const f = document.createElement("iframe");
+  document.body.appendChild(f);
+  const fc = f.contentWindow.document.createElement("canvas");
+  fc.width = 220; fc.height = 40;
+  const fx = fc.getContext("2d");
+  fx.textBaseline = "top"; fx.font = "16px Arial"; fx.fillStyle = "#f60"; fx.fillRect(10, 5, 120, 20); fx.fillStyle = "#069"; fx.fillText("Veil fingerprint test", 4, 12);
+  window.__fp.frame = fc.toDataURL();
+</script>

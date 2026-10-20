@@ -1,0 +1,11 @@
+! Filters for Veil's end-to-end tests (written for the tests, not copied from any list).
+||ads.test^
+||tracker.test^$third-party
+||scam.test^$document
+||redirect.test/lib.js$script,redirect=noop.js
+##.ad-banner
+site.test###cookie-notice
+site.test##+js(veil-mark, __marked)
+||csp.test^$csp=script-src 'none'
+##.sponsored
+news.test###cookie-notice
