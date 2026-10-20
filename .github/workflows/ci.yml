@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Unit tests (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run typecheck
+
+  e2e:
+    name: End-to-end tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: sudo apt-get update && sudo apt-get install -y xvfb
+      - run: xvfb-run -a -s "-screen 0 1400x900x24" npm run test:e2e
+        timeout-minutes: 15
+
+  package:
+    name: Package (Linux smoke test)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lists
+      - run: npm run dist:dir -- --linux
+      - name: Fuses are set
+        run: |
+          npx @electron/fuses read --app dist/linux-unpacked/veil | tee fuses.txt
+          grep -q "RunAsNode is Disabled" fuses.txt
+          grep -q "EnableNodeCliInspectArguments is Disabled" fuses.txt
+          grep -q "OnlyLoadAppFromAsar is Enabled" fuses.txt
+      - run: sudo apt-get update && sudo apt-get install -y xvfb
+      - name: The packaged app starts
+        run: |
+          xvfb-run -a dist/linux-unpacked/veil --no-sandbox --profile="$RUNNER_TEMP/profile" > veil.log 2>&1 &
+          sleep 15
+          test -f "$RUNNER_TEMP/profile/settings.json" -o -d "$RUNNER_TEMP/profile/Partitions"
+          pkill -f linux-unpacked/veil || true
+          cat veil.log
