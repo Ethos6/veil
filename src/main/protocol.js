@@ -39,8 +39,8 @@ export function resolveInternal(rootDir, url) {
   const host = u.hostname;
   let rel = decodeURIComponent(u.pathname).replace(/^\/+/, "");
   let base;
-  if (host === "ui") base = path.join(rootDir, "ui");
-  else if (INTERNAL_PAGES.includes(host)) base = path.join(rootDir, "pages");
+  if (host === "ui") base = path.resolve(rootDir, "ui");
+  else if (INTERNAL_PAGES.includes(host)) base = path.resolve(rootDir, "pages");
   else return null;
   if (!rel) rel = host === "ui" ? "index.html" : `${host}.html`;
   if (rel.includes("\0")) return null;
