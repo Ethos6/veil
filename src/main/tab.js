@@ -63,6 +63,8 @@ export class Tab {
     this.upgraded = 0;
     this.stripped = 0;
     this.lastInput = 0;
+    /** An http URL whose HTTPS upgrade looped back to http (see Browser#isUpgradeLoop). */
+    this.upgradeLoop = "";
     /** @type {{ http: string, https: string, at: number } | null} */
     this.lastUpgrade = null;
     /** @type {{ text: string, active: number, matches: number } | null} */
@@ -197,6 +199,11 @@ export class Tab {
     wc.on("did-fail-load", (_e, code, desc, validatedURL, isMainFrame) => {
       if (!isMainFrame || code === -3 /* aborted */ || code === -27 /* blocked by response, e.g. a download */) return;
       if (code === -20 /* blocked by client */ && this.browser.documentBlockPending(this, validatedURL)) return;
+      if (code === -20 && this.upgradeLoop && hostOf(this.upgradeLoop) === hostOf(validatedURL)) {
+        const url = this.upgradeLoop;
+        this.upgradeLoop = "";
+        return this.showError("https", url, -310, "ERR_TOO_MANY_REDIRECTS", "", validatedURL);
+      }
       const up = this.lastUpgrade;
       // Match the host, not the exact URL: the upgraded request may have been redirected or cleaned since.
       if (up && hostOf(up.https) === hostOf(validatedURL) && validatedURL.startsWith("https:") && Date.now() - up.at < 120_000 && HTTPS_FALLBACK_ERRORS.has(code)) {

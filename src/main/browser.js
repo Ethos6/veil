@@ -396,7 +396,8 @@ export class Browser {
     if (!lu || lu.http !== url || Date.now() - lu.at > 5000) return false;
     // The https page sent us straight back to http: the site doesn't really support HTTPS.
     owner.lastUpgrade = null;
-    setImmediate(() => { if (!owner.wc?.isDestroyed?.()) owner.showError?.("https", url, -310, "ERR_TOO_MANY_REDIRECTS"); });
+    // The cancelled request ends in did-fail-load, where the tab shows the HTTPS warning.
+    owner.upgradeLoop = url;
     return true;
   }
 
