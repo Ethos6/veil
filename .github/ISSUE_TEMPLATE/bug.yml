@@ -1,0 +1,25 @@
+name: Bug report
+description: Something in Veil doesn't work as it should
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: "1. Open …\n2. Click …"
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Veil version and operating system
+      description: Shown on veil://about
+      placeholder: "Veil 1.0.0, Windows 11"
+    validations:
+      required: true

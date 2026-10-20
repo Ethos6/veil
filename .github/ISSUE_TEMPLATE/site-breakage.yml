@@ -1,0 +1,29 @@
+name: Site breakage
+description: A website doesn't work properly in Veil
+labels: [site-breakage]
+body:
+  - type: input
+    id: url
+    attributes:
+      label: Website address
+      placeholder: https://example.com/page
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What doesn't work?
+    validations:
+      required: true
+  - type: dropdown
+    id: shields
+    attributes:
+      label: Does it work with Shields down for that site?
+      options: ["Yes, it works with Shields down", "No, it's broken either way", "Didn't try"]
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Veil version and operating system
+      placeholder: "Veil 1.0.0, macOS 15"
