@@ -53,7 +53,7 @@ export function parseBookmarkHtml(html) {
   while ((m = re.exec(html)) && out.length < 50_000) {
     const url = decodeEntities(m[1]);
     if (!/^https?:\/\//i.test(url)) continue;
-    out.push({ url, title: decodeEntities(m[2].replace(/<[^>]*>/g, "")).trim().slice(0, 500) || url });
+    out.push({ url, title: textOf(m[2]).slice(0, 500) || url });
   }
   return out;
 }
@@ -71,6 +71,13 @@ export function bookmarksToHtml(items) {
     "</DL><p>",
     "",
   ].join("\n");
+}
+
+/** Plain text of an HTML fragment: tags removed until none are left, then entities decoded. */
+function textOf(html) {
+  let s = String(html);
+  for (let prev = ""; prev !== s;) { prev = s; s = s.replace(/<[^<>]*>/g, ""); }
+  return decodeEntities(s.replace(/[<>]/g, "")).trim();
 }
 
 function decodeEntities(s) {

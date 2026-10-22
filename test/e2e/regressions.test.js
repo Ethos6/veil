@@ -61,10 +61,10 @@ test("target=_blank forms keep their POST body, and window.open() returns a usab
   await load(app, "https://site.test/post-form");
   await clickTab(app, "#go");
   await until(() => seen.some((s) => s.path === "/posted" && s.headers["content-length"] === "3"), 5000, "POST in new tab");
-  await until(async () => (await tabs()).includes("https://other.test/posted"), 5000, "posted tab");
+  await until(async () => (await tabs()).some((u) => u === "https://other.test/posted"), 5000, "posted tab");
   await app.evaluate(() => { const w = globalThis.veil.windows[0]; w.activate(w.tabs.find((t) => t.url.endsWith("/post-form"))); });
   await clickTab(app, "#w");
-  await until(async () => (await tabs()).includes("https://other.test/written"), 5000, "window navigated by its opener");
+  await until(async () => (await tabs()).some((u) => u === "https://other.test/written"), 5000, "window navigated by its opener");
   await app.evaluate(() => { const w = globalThis.veil.windows[0]; w.activate(w.tabs.find((t) => t.url.endsWith("/post-form"))); });
   assert.equal(await evalTab(app, "window.__isWindow"), true);
   await closeExtraTabs();
