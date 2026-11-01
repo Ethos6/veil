@@ -10,8 +10,7 @@
   },
   "bugs": "https://github.com/Ethos6/veil/issues",
   "author": {
-    "name": "Ethos 6",
-    "email": "connect@atomesus.com"
+    "name": "Ethos 6"
   },
   "license": "MIT",
   "type": "module",
